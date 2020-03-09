@@ -6,6 +6,9 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+
+    <a href="{{ url('news_index') }}">News</a> |  <a href="{{ url('blog_index') }}">Blogs</a>
+    <hr>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
