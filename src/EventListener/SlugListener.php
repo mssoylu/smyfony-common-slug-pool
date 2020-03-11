@@ -12,15 +12,13 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 class SlugListener
 {
     private $entity;
+    private $instanceArr = [''];
 
     /**
      * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        /**
-         * Slug kayitli mi kontrolu
-         */
         $type = null;
 
         $this->entity = $args->getObject();
@@ -35,6 +33,12 @@ class SlugListener
 
         if ($type !== null) {
             $em = $args->getObjectManager();
+
+            /**
+             * Slug kayitli mi kontrolu yap
+             * Kayitli ise hata verilecek
+             * Kayitli degilse preFlush icin onay verilecek
+             */
         }
     }
 
@@ -67,9 +71,15 @@ class SlugListener
 
     public function preUpdate(LifecycleEventArgs $args)
     {
-        /**
-         * Slug kayitli mi kontrolu
-         */
-        echo 'upodate'; exit;
+
+    }
+
+    private function instanceInArray($entity, $instanceArr)
+    {
+        foreach ($instanceArr as $instance) {
+            if ($entity instanceof $instance)
+                return true;
+        }
+        return false;
     }
 }
