@@ -5,11 +5,11 @@ snc_redis:
             alias: default
             dsn: redis://localhost
             logging: '%kernel.debug%'
-        cache:
-            type: phpredis
-            alias: cache
-            dsn: redis://localhost/1
-            logging: false
+#        cache:
+#            type: phpredis
+#            alias: cache
+#            dsn: redis://localhost/1
+#            logging: false
 #        cluster:
 #            type: phpredis
 #            alias: cluster
@@ -27,25 +27,25 @@ snc_redis:
 #                iterable_multibulk: false
 #                throw_errors: true
 #                cluster: phpredis
-    session:
-        client: default
-        prefix: foo
-    doctrine:
-        metadata_cache:
-            client: cache
-            entity_manager: default
-            document_manager: default
-        result_cache:
-            client: cache
-            entity_manager: [default, read]
-            document_manager: [default, slave1, slave2]
-            namespace: "dcrc:"
-        query_cache:
-            client: cache
-            entity_manager: default
-        second_level_cache:
-            client: cache
-            entity_manager: default
+#    session:
+#        client: default
+#        prefix: foo
+#    doctrine:
+#        metadata_cache:
+#            client: cache
+#            entity_manager: default
+#            document_manager: default
+#        result_cache:
+#            client: cache
+#            entity_manager: [default, read]
+#            document_manager: [default, slave1, slave2]
+#            namespace: "dcrc:"
+#        query_cache:
+#            client: cache
+#            entity_manager: default
+#        second_level_cache:
+#            client: cache
+#            entity_manager: default
 #    monolog:
 #        client: cache
 #        key: monolog
