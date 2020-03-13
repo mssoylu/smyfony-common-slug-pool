@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Slug{% endblock %}
+
+{% block body %}
+    <h1>Create new Slug</h1>
+
+    {{ include('slug/_form.html.twig') }}
+
+    <a href="{{ path('slug_index') }}">back to list</a>
+{% endblock %}
