@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="stylesheet" href="{{ asset('build/global.css') }}">
-        {% block stylesheets %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('build/global.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="container">
+<nav class="nav">
+    <a  class="nav-link" href="{{ url('news_index') }}">News</a>
+    <a class="nav-link" href="{{ url('blog_index') }}">Blogs</a>
+    <a class="nav-link" href="{{ url('slug_index') }}">Slugs</a>
+</nav>
 
-        {% endblock %}
-    </head>
-    <body>
 
-    <a href="{{ url('news_index') }}">News</a> |  <a href="{{ url('blog_index') }}">Blogs</a>
-    <hr>
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
+</div>
 
-    <script src="{{ asset('build/app.js') }}"></script>
-    {% block javascripts %}
-    {% endblock %}
-    </body>
+<script src="{{ asset('build/app.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
 </html>
