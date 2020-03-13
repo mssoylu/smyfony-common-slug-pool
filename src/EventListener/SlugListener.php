@@ -4,16 +4,15 @@ namespace App\EventListener;
 
 use App\Entity\Blog;
 use App\Entity\News;
-use App\Entity\Slug;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Snc\RedisBundle\Client\Phpredis\Client;
 
 class SlugListener
 {
     private $entity;
-    private $instanceArr = [''];
-
+    
     /**
      * @param LifecycleEventArgs $args
      */
@@ -22,6 +21,7 @@ class SlugListener
         $type = null;
 
         $this->entity = $args->getObject();
+
 
         if (!$this->entity instanceof Blog) {
             $type = 'blog';
@@ -44,9 +44,9 @@ class SlugListener
 
     /**
      * @param PreFlushEventArgs $args
-     * @throws \Doctrine\ORM\ORMException
+     * @param Client $redis
      */
-    public function preFlush(PreFlushEventArgs $args)
+    public function preFlush(PreFlushEventArgs $args, Client $redis)
     {
         $type = null;
         $slugger = new Slugify();
@@ -62,10 +62,7 @@ class SlugListener
         }
 
         if ($type !== null) {
-            $slug = new Slug();
-            $slug->setSlug($slugger->slugify($this->entity->getTitle()));
-            $slug->setType($type);
-            $em->persist($slug);
+            $redis->set($this->entity->getSlug(),get_class($this->entity));
         }
     }
 
