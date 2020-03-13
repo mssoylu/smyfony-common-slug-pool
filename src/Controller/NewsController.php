@@ -65,11 +65,9 @@ class NewsController extends AbstractController
 
     public function delete(Request $request, News $news): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$news->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($news);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($news);
+        $entityManager->flush();
 
         return $this->redirectToRoute('news_index');
     }

@@ -52,7 +52,7 @@ class SlugListener
 
     /**
      * @param PreFlushEventArgs $args
-     * @param Client $redis
+     * @throws \Doctrine\ORM\ORMException
      */
     public function preFlush(PreFlushEventArgs $args)
     {
@@ -61,31 +61,56 @@ class SlugListener
 
         $em = $args->getEntityManager();
 
-        if (!$this->entity instanceof Blog) {
-            $type = 'blog';
+        foreach ($em->getUnitOfWork()->getScheduledEntityUpdates() as $entity) {
+            if (!$this->entity instanceof Blog) {
+                $type = 'blog';
+            }
+
+            if (!$this->entity instanceof News) {
+                $type = 'news';
+            }
+
+            if ($type !== null) {
+
+                $this->redis->set($this->entity->getSlug(), get_class($this->entity));
+
+                $slug = new Slug();
+                $slug->setSlug($this->entity->getTitle());
+                $slug->setType(get_class($this->entity));
+                $em->persist($slug);
+            }
         }
 
-        if (!$this->entity instanceof News) {
-            $type = 'news';
+        foreach ($em->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
+            if (!$this->entity instanceof Blog) {
+                $type = 'blog';
+            }
+
+            if (!$this->entity instanceof News) {
+                $type = 'news';
+            }
+
+            if ($type !== null) {
+
+                $this->redis->set($this->entity->getSlug(), get_class($this->entity));
+
+                $slug = new Slug();
+                $slug->setSlug($this->entity->getTitle());
+                $slug->setType(get_class($this->entity));
+                $em->persist($slug);
+            }
         }
 
-        if ($type !== null) {
-
-            $this->redis->set($this->entity->getSlug(),get_class($this->entity));
-
-            $slug = new Slug();
-            $slug->setSlug($this->entity->getTitle());
-            $slug->setType(get_class($this->entity));
-            $em->persist($slug);
-        }
     }
 
-    public function preUpdate(LifecycleEventArgs $args)
+    public
+    function preUpdate(LifecycleEventArgs $args)
     {
 
     }
 
-    private function instanceInArray($entity, $instanceArr)
+    private
+    function instanceInArray($entity, $instanceArr)
     {
         foreach ($instanceArr as $instance) {
             if ($entity instanceof $instance)
