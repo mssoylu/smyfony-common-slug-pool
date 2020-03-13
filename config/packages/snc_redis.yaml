@@ -3,4 +3,52 @@ snc_redis:
         default:
             type: phpredis
             alias: default
-            dsn: "%env(REDIS_URL)%"
+            dsn: redis://localhost
+            logging: '%kernel.debug%'
+        cache:
+            type: phpredis
+            alias: cache
+            dsn: redis://localhost/1
+            logging: false
+#        cluster:
+#            type: phpredis
+#            alias: cluster
+#            dsn:
+#                - redis://127.0.0.1/1
+#                - redis://127.0.0.2/2
+#                - redis://pw@/var/run/redis/redis-1.sock/10
+#                - redis://pw@127.0.0.1:63790/10
+#            options:
+#                prefix: foo
+#                profile: 2.4
+#                connection_timeout: 10
+#                connection_persistent: true
+#                read_write_timeout: 30
+#                iterable_multibulk: false
+#                throw_errors: true
+#                cluster: phpredis
+    session:
+        client: default
+        prefix: foo
+    doctrine:
+        metadata_cache:
+            client: cache
+            entity_manager: default
+            document_manager: default
+        result_cache:
+            client: cache
+            entity_manager: [default, read]
+            document_manager: [default, slave1, slave2]
+            namespace: "dcrc:"
+        query_cache:
+            client: cache
+            entity_manager: default
+        second_level_cache:
+            client: cache
+            entity_manager: default
+#    monolog:
+#        client: cache
+#        key: monolog
+#    swiftmailer:
+#        client: default
+#        key: swiftmailer

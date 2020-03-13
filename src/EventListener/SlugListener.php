@@ -12,7 +12,7 @@ use Snc\RedisBundle\Client\Phpredis\Client;
 class SlugListener
 {
     private $entity;
-    
+
     /**
      * @param LifecycleEventArgs $args
      */
