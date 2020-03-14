@@ -5,17 +5,17 @@ namespace App\EventListener;
 use App\Entity\Blog;
 use App\Entity\News;
 use App\Entity\Slug;
-use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Snc\RedisBundle\Client\Phpredis\Client;
 
+/**
+ * Class SlugListener
+ * @package App\EventListener
+ */
 class SlugListener
 {
     private $entity;
-
     private $redis;
-
     private $entitiesListArr = ['Blog', 'News'];
 
     public function __construct($redis)
@@ -77,12 +77,20 @@ class SlugListener
 
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public
     function preUpdate(LifecycleEventArgs $args)
     {
 
     }
 
+    /**
+     * @param $entity
+     * @param $instanceArr
+     * @return bool
+     */
     private
     function instanceInArray($entity, $instanceArr)
     {
