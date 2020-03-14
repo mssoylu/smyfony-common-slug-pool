@@ -29,26 +29,15 @@ class SlugListener
     public function prePersist(LifecycleEventArgs $args)
     {
         $type = null;
+        $em = $args->getObject();
 
-        $this->entity = $args->getObject();
+        foreach ($em->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
+            $arr = explode('\\', get_class($entity));
+            $type = end($arr);
 
+            if (in_array($type, $this->entitiesListArr)) {
 
-        if (!$this->entity instanceof Blog) {
-            $type = 'blog';
-        }
-
-        if (!$this->entity instanceof News) {
-            $type = 'news';
-        }
-
-        if ($type !== null) {
-            $em = $args->getObjectManager();
-
-            /**
-             * Slug kayitli mi kontrolu yap
-             * Kayitli ise hata verilecek
-             * Kayitli degilse preFlush icin onay verilecek
-             */
+            }
         }
     }
 
@@ -80,24 +69,8 @@ class SlugListener
     /**
      * @param LifecycleEventArgs $args
      */
-    public
-    function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(LifecycleEventArgs $args)
     {
 
-    }
-
-    /**
-     * @param $entity
-     * @param $instanceArr
-     * @return bool
-     */
-    private
-    function instanceInArray($entity, $instanceArr)
-    {
-        foreach ($instanceArr as $instance) {
-            if ($entity instanceof $instance)
-                return true;
-        }
-        return false;
     }
 }
