@@ -13,6 +13,7 @@ class BlogType extends AbstractType
     {
         $builder
             ->add('title')
+            ->add('slug')
             ->add('content')
         ;
     }

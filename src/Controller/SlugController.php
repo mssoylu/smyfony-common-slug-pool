@@ -64,11 +64,9 @@ class SlugController extends AbstractController
 
     public function delete(Request $request, Slug $slug): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$slug->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($slug);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($slug);
+        $entityManager->flush();
 
         return $this->redirectToRoute('slug_index');
     }

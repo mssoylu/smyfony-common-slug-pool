@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Slug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
