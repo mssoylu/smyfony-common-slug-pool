@@ -2,11 +2,8 @@
 
 namespace App\EventListener;
 
-use App\Entity\Blog;
-use App\Entity\News;
 use App\Entity\Slug;
 use Doctrine\ORM\Event\PreFlushEventArgs;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Class SlugListener
@@ -14,31 +11,12 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
  */
 class SlugListener
 {
-    private $entity;
     private $redis;
     private $entitiesListArr = ['Blog', 'News'];
 
     public function __construct($redis)
     {
         $this->redis = $redis;
-    }
-
-    /**
-     * @param LifecycleEventArgs $args
-     */
-    public function prePersist(LifecycleEventArgs $args)
-    {
-        $type = null;
-        $em = $args->getObject();
-
-        foreach ($em->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
-            $arr = explode('\\', get_class($entity));
-            $type = end($arr);
-
-            if (in_array($type, $this->entitiesListArr)) {
-
-            }
-        }
     }
 
     /**
@@ -50,27 +28,25 @@ class SlugListener
         $em = $args->getEntityManager();
 
         foreach ($em->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
-            $arr = explode('\\', get_class($entity));
-            $type = end($arr);
+            if (in_array($this->getClassName($entity), $this->entitiesListArr)) {
 
-            if (in_array($type, $this->entitiesListArr)) {
-
-                $this->redis->set($entity->getSlug(), $type);
+                $this->redis->set($entity->getSlug(), $this->getClassName($entity));
 
                 $slug = new Slug();
                 $slug->setSlug($entity->getSlug());
-                $slug->setType($type);
+                $slug->setType($this->getClassName($entity));
                 $em->persist($slug);
             }
         }
-
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param $entity
+     * @return string
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    private function getClassName($entity)
     {
-
+        $arr = explode('\\', get_class($entity));
+        return end($arr);
     }
 }

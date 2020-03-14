@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\Slug;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +28,8 @@ class Blog
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Slug()
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $slug;
 

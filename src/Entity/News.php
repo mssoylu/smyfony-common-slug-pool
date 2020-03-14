@@ -27,7 +27,8 @@ class News
     private $content;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
+     * @\App\Validator\Slug()
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $slug;
 
