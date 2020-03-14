@@ -17,11 +17,10 @@ class MainController extends AbstractController
     public function show($slug)
     {
         $em = $this->getDoctrine()->getManager();
-
         $slug = $em->getRepository(Slug::class)->findOneBy(['slug' => $slug]);
 
         if ($slug) {
-            return $this->forward('App\Controller\ShowController:' . $slug->getType(), [
+            return $this->forward('App\Controller\ShowController:' . strtolower($slug->getType()), [
                 'slug' => $slug->getSlug()
             ]);
         }

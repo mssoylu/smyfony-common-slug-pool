@@ -7,18 +7,18 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Slug</th>
-                <th>Type</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Slug</th>
+            <th>Type</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for slug in slugs %}
             <tr>
                 <td>{{ slug.id }}</td>
-                <td>{{ slug.slug }}</td>
+                <td><a href="{{ path('site_show',{'slug':slug.slug}) }}">{{ slug.slug }}</a></td>
                 <td>{{ slug.type }}</td>
                 <td>
                     <a href="{{ path('slug_show', {'id': slug.id}) }}">show</a>

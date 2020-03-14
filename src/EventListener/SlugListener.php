@@ -16,6 +16,8 @@ class SlugListener
 
     private $redis;
 
+    private $entitiesListArr = ['Blog', 'News'];
+
     public function __construct($redis)
     {
         $this->redis = $redis;
@@ -56,47 +58,19 @@ class SlugListener
      */
     public function preFlush(PreFlushEventArgs $args)
     {
-        $type = null;
-        $slugger = new Slugify();
-
         $em = $args->getEntityManager();
 
-        foreach ($em->getUnitOfWork()->getScheduledEntityUpdates() as $entity) {
-            if (!$this->entity instanceof Blog) {
-                $type = 'blog';
-            }
-
-            if (!$this->entity instanceof News) {
-                $type = 'news';
-            }
-
-            if ($type !== null) {
-
-                $this->redis->set($this->entity->getSlug(), get_class($this->entity));
-
-                $slug = new Slug();
-                $slug->setSlug($this->entity->getTitle());
-                $slug->setType(get_class($this->entity));
-                $em->persist($slug);
-            }
-        }
-
         foreach ($em->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
-            if (!$this->entity instanceof Blog) {
-                $type = 'blog';
-            }
+            $arr = explode('\\', get_class($entity));
+            $type = end($arr);
 
-            if (!$this->entity instanceof News) {
-                $type = 'news';
-            }
+            if (in_array($type, $this->entitiesListArr)) {
 
-            if ($type !== null) {
-
-                $this->redis->set($this->entity->getSlug(), get_class($this->entity));
+                $this->redis->set($entity->getSlug(), $type);
 
                 $slug = new Slug();
-                $slug->setSlug($this->entity->getTitle());
-                $slug->setType(get_class($this->entity));
+                $slug->setSlug($entity->getSlug());
+                $slug->setType($type);
                 $em->persist($slug);
             }
         }
