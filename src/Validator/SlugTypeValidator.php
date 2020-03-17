@@ -6,7 +6,7 @@ use App\Repository\SlugRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class SlugValidator extends ConstraintValidator
+class SlugTypeValidator extends ConstraintValidator
 {
     private $slugRepository;
 
@@ -33,7 +33,7 @@ class SlugValidator extends ConstraintValidator
             return;
         }
 
-        /* @var $constraint \App\Validator\Slug */
+        /* @var $constraint \App\Validator\SlugType */
         $this->context->buildViolation($constraint->message)
             ->addViolation();
     }

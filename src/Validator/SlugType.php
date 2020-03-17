@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
  * @Annotation
  * @Target({"PROPERTY", "ANNOTATION"})
  */
-class Slug extends Constraint
+class SlugType extends Constraint
 {
     /*
      * Any public properties become valid options for the annotation.
