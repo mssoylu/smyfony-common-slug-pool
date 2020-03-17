@@ -12,10 +12,11 @@ use Doctrine\ORM\Event\PreFlushEventArgs;
 class SlugListener
 {
     private $redis;
-    private $entitiesListArr = ['Blog', 'News'];
+    private $entitiesListArr;
 
-    public function __construct($redis)
+    public function __construct($redis, $entityArr)
     {
+        $this->entitiesListArr = $entityArr;
         $this->redis = $redis;
     }
 

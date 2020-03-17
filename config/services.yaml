@@ -28,5 +28,6 @@ services:
     App\EventListener\SlugListener:
         arguments:
             - "@snc_redis.default"
+            - ['Blog','News']
         tags:
             - { name: doctrine.event_listener, event: preFlush }
