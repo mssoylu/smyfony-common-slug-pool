@@ -33,3 +33,4 @@ services:
                 - News
         tags:
             - { name: doctrine.event_listener, event: preFlush }
+            - { name: doctrine.event_listener, event: preRemove }

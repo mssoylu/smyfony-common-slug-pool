@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\Slug;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 
 /**
@@ -39,6 +40,14 @@ class SlugListener
                 $em->persist($slug);
             }
         }
+    }
+
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function preRemove(LifecycleEventArgs $args) {
+        $entity = $args->getEntity();
+        $this->redis->delete($entity->getSlug(), $this->getClassName($entity));
     }
 
     /**
