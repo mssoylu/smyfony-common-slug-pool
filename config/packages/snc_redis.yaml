@@ -52,3 +52,6 @@ snc_redis:
 #    swiftmailer:
 #        client: default
 #        key: swiftmailer
+
+services:
+    Redis: '@snc_redis.default'
