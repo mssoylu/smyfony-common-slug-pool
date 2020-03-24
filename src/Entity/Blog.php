@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
+ * @SlugType()
  */
 class Blog
 {
@@ -28,7 +29,6 @@ class Blog
     private $content;
 
     /**
-     * @SlugType()
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $slug;

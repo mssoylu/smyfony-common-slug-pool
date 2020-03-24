@@ -23,18 +23,32 @@ class SlugTypeValidator extends ConstraintValidator
      * @param mixed $value
      * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($entity, Constraint $constraint)
     {
         $existingSlug = $this->slugRepository->findOneBy([
-            'slug' => $value
+            'slug' => $entity->getSlug()
         ]);
 
         if (!$existingSlug) {
             return;
         }
 
+        if ($entity->getId() == $existingSlug->getItemId() && $this->getClassName($entity) == $existingSlug->getType()) {
+            return;
+        }
+
         /* @var $constraint \App\Validator\SlugType */
         $this->context->buildViolation($constraint->message)
             ->addViolation();
+    }
+
+    /**
+     * @param $entity
+     * @return string
+     */
+    private function getClassName($entity)
+    {
+        $arr = explode('\\', get_class($entity));
+        return end($arr);
     }
 }
