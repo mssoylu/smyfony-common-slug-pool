@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController
 {
-
-
     public function index()
     {
         return $this->render('main/index.html.twig', [
@@ -17,11 +15,14 @@ class MainController extends AbstractController
         ]);
     }
 
-    public function show($slug, \Redis $client)
+    public function show($slug, $page, \Redis $client)
     {
-        if ($client->get($slug)) {
-            return $this->forward('App\Controller\ShowController:' . strtolower($client->get($slug)), [
-                'slug' => $slug
+        $slugArr = json_decode($client->get($slug));
+
+        if (!empty($slugArr)) {
+            return $this->forward('App\Controller\ShowController:' . strtolower($slugArr[0]), [
+                'slug' => $slug,
+                'page' => $page
             ]);
         }
 
@@ -30,7 +31,8 @@ class MainController extends AbstractController
 
         if ($slug) {
             return $this->forward('App\Controller\ShowController:' . strtolower($slug->getType()), [
-                'slug' => $slug->getSlug()
+                'slug' => $slug->getSlug(),
+                'page' => $page
             ]);
         }
 

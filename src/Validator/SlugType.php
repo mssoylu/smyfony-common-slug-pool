@@ -14,4 +14,9 @@ class SlugType extends Constraint
      * Then, use these in your validator class.
      */
     public $message = 'The slug is already using.';
+
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }

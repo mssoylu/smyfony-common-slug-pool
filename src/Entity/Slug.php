@@ -26,6 +26,11 @@ class Slug
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $itemId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class Slug
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getItemId(): ?int
+    {
+        return $this->itemId;
+    }
+
+    public function setItemId(int $itemId): self
+    {
+        $this->itemId = $itemId;
 
         return $this;
     }

@@ -111,5 +111,7 @@ slug_show:
 # SLUG SITE
 
 site_show:
-  path: /{slug}
+  path: /{slug}/{page}
   controller: App\Controller\MainController::show
+  defaults:
+    page: 1
