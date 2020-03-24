@@ -15,7 +15,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    public function show($slug, $page, \Redis $client)
+    public function show($slug, $page=1, \Redis $client)
     {
         $slugArr = json_decode($client->get($slug));
 

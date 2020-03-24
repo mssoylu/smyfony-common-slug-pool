@@ -10,7 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ShowController extends AbstractController
 {
-    public function news($slug,$page, Request $request, PaginatorInterface $paginator)
+    /**
+     * @param $slug
+     * @param $page
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function news($slug, $page, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $news = $em->getRepository(News::class)->findOneBy(['slug' => $slug]);
@@ -20,7 +26,13 @@ class ShowController extends AbstractController
         ]);
     }
 
-    public function blog($slug,$page, Request $request, PaginatorInterface $paginator)
+    /**
+     * @param $slug
+     * @param $page
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function blog($slug, $page, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $blog = $em->getRepository(Blog::class)->findOneBy(['slug' => $slug]);
